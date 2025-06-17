@@ -9,7 +9,12 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@types/node": "^16.11.25",
     "apexcharts": "^3.35.0",
+    "axios": "^1.8.4",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
+    "socket.io-client": "^4.8.1",
     "vue": "^3.2.31",
     "vue-instantsearch": "^4.3.3",
     "vue-router": "^4.0.12",
@@ -19,7 +24,6 @@
   "devDependencies": {
     "@mdi/font": "^6.5.95",
     "@rushstack/eslint-patch": "^1.1.0",
-    "@types/node": "^16.11.25",
     "@vitejs/plugin-vue": "^2.2.2",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^10.0.0",

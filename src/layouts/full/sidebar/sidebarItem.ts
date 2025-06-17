@@ -14,6 +14,11 @@ export default [
     icon: "mdi-card-outline",
     to: "/ui-components/cards",
   },
+  {
+    title: "Informes",
+    icon: "mdi-file-chart-outline",
+    to: "/ui-components/menus",
+  },
   /*{
     title: "Alert",
     icon: "mdi-alert-circle-outline",

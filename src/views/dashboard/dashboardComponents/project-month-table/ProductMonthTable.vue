@@ -1,113 +1,64 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
-const select = ref("March");
-const items = ref(["March", "April", "May", "June"]);
+const monthtable = ref<any[]>([]);
 
-const monthtable = ref([
-  {
-    id: 1,
-    activestate: "",
-    leadname: "Sunil Joshi",
-    leademail: "Web Designer",
-telefono:"9999999",
-statuscolor: "info",
-    statustext: 5,
+const fetchDistribuidores = async () => {
+  try {
+    // URL con valor por defecto
+    const API_URL = `${
+      import.meta.env.VITE_API_BASE_URL// || 'http://localhost:3000'
+    }/apigw/v1/distribuidor`;
+    
+    console.log("Intentando acceder a:", API_URL);
+    
+    const response = await axios.get(API_URL);
+    
+    monthtable.value = response.data.map((distribuidor: any) => ({
+      id: distribuidor.id,
+      leadname: `${distribuidor.nombres} ${distribuidor.apellidos}`,
+      telefono: distribuidor.telefono,
+      statustext: distribuidor.total_pedidos_pendientes,
+      statuscolor: "info"
+    }));
+    
+  } catch (error) {
+    console.error("Error completo:", error);
+    //console.error("URL solicitada:", error.config?.url);
+  }
+};
 
-  },
-  {
-    id: 2,
-    activestate: "",
-    leadname: "Andrew",
-    leademail: "Project Manager",
-    telefono:"9999999",
- 
-    statuscolor: "info",
-    statustext: 5,
-    money: "$23.9K",
-  },
-  {
-    id: 3,
-    activestate: "",
-    leadname: "Bhavesh patel",
-    leademail: "Developer",
-    telefono:"9999999",
-    statuscolor: "info",
-    statustext: 5,
-    money: "$12.9K",
-  },
-  {
-    id: 4,
-    activestate: "",
-    leadname: "Nirav Joshi",
-    leademail: "Frontend Eng",
-    projectname: "Elite Admin",
-    telefono:"9999999",
-    statuscolor: "info",
-    statustext: 5,
-    money: "$10.9K",
-  },
-]);
+onMounted(() => {
+  fetchDistribuidores();
+});
 </script>
 
 <template>
   <v-card flat class="w-100 h-100">
     <v-card-text>
       <div class="d-sm-flex align-center">
-        <div>
-          <h2 class="title text-h6 font-weight-medium">Distribuidores</h2>
-        </div>
-        
+        <h2 class="title text-h6 font-weight-medium">Distribuidores</h2>
       </div>
+      
       <v-table class="month-table mt-7">
         <template v-slot:default>
           <thead>
             <tr>
-              <th class="font-weight-medium text-subtitle-1">Id</th>
-              
-              <th class="font-weight-medium text-subtitle-1">Nombre</th>
-              <th class="font-weight-medium text-subtitle-1">Teléfono</th>
-
-              <th class="font-weight-medium text-subtitle-1">Cantidad de pedidos</th>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Pedidos pendientes</th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="item in monthtable"
-              :key="item.leadname"
-              :class="item.activestate"
-              class="month-item"
-            >
+            <tr v-for="item in monthtable" :key="item.id">
               <td>{{ item.id }}</td>
+              <td>{{ item.leadname }}</td>
+              <td>{{ item.telefono }}</td>
               <td>
-                <h4 class="font-weight-bold text-no-wrap">
-                  {{ item.leadname }}
-                </h4>
-                <h6
-                  class="
-                    text-no-wrap
-                    font-weight-regular
-                    text-body-2 text-grey-darken-1
-                  "
-                >
-                  {{ item.leademail }}
-                </h6>
+                <v-chip color="info" label>{{ item.statustext }}</v-chip>
               </td>
-              <td>
-                <h4>
-                  {{ item.telefono }}
-                </h4>
-              </td>
-              <td>
-                <v-chip
-                  class="ma-2"
-                  :color="item.statuscolor"
-                  size="small"
-                  label
-                  >{{ item.statustext }}</v-chip
-                >
-              </td>
-              
             </tr>
           </tbody>
         </template>
